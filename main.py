@@ -15,12 +15,15 @@
 # [START gae_python38_app]
 # [START gae_python3_app]
 from flask import Flask
+from google.cloud import datastore
 import os
 
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__)
+
+dataclient = datastore.Client()
 
 
 @app.route('/')
@@ -41,6 +44,27 @@ def getid():
 def getversionid():
     versionid = os.getenv('GAE_VERSION')
     return str(versionid)
+
+@app.route('visitors')
+def getVisitors():
+    addVisitor()
+    ent = dataclient.key('data', 'visitors')
+    total = dataclient.get(key=client)
+    if total:
+        return 'Total visitors: ' + str(total['total'])
+    else:
+        return 'Total broke!'
+
+def addVisitor():
+    ent = dataclient.key('data', 'visitors')
+    total = dataclient.get(key=ent)
+    if total:
+        total['total'] += 1
+        dataclient.put(total)
+    else:
+        total = datastore.Entity(key=ent)
+        total['total'] = 0
+        dataclient.put(total)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
