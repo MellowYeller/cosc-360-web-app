@@ -15,6 +15,7 @@
 # [START gae_python38_app]
 # [START gae_python3_app]
 from flask import Flask
+import os
 
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
@@ -27,6 +28,19 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello from Mitchell Vivian 300202471!'
 
+@app.route('/version')
+def versA():
+    return 'This is app version B!'
+
+@app.route('/instance')
+def getid():
+    instanceid = os.getenv('GAE_INSTANCE')
+    return str(instanceid)
+
+@app.route('/version-id')
+def getversionid():
+    versionid = os.getenv('GAE_VERSION')
+    return str(versionid)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
