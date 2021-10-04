@@ -14,9 +14,10 @@
 
 # [START gae_python38_app]
 # [START gae_python3_app]
-from flask import Flask
+from flask import Flask, request, redirect
+from datetime import datetime
 from google.cloud import datastore
-import os
+import os, json
 
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
@@ -35,6 +36,24 @@ def hello():
 def edit_page():
     with open('editor.html', 'r') as page:
         return page.read()
+
+@app.route('/submit', methods = ['POST'])
+def submit_post():
+    password = request.form['pass']
+    if password == 'securityismypassion':
+        content = request.form['content']
+        title = request.form['title']
+        time = str[datetime.utcnow()]
+        post = json.dumps([content, title, time])
+        ent = dataclient.key('data', 'posts')
+        posts = dataclient.get(key=ent)
+        if posts:
+            posts['posts'] = [post] + posts['posts']
+        else:
+            posts = datastore.Entity(key=ent)
+            posts['posts'] = [post]
+        dataclient.put(posts)
+    return redirect('/')
 
 @app.route('/version')
 def versA():
