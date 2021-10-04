@@ -31,6 +31,11 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello from Mitchell Vivian 300202471!'
 
+@app.route('/editor')
+def edit_page():
+    with open('editor.html', 'r') as page:
+        return page.read()
+
 @app.route('/version')
 def versA():
     return 'This is app version B!'
