@@ -28,22 +28,38 @@ dataclient = datastore.Client()
 
 
 @app.route('/')
-def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello from Mitchell Vivian 300202471!'
+def main_page():
+    ent = dataclient.key('data', 'posts')
+    posts = dataclient.get(key=ent)
+    article = ""
+    with open('article.html', 'r') as page:
+        article = page.read()
+    html = ""
+    if posts:
+        for post in posts['posts']:
+            array = json.loads(post)
+            raw = article.replace('!content!', array[0])
+            raw = raw.replace('!title!', array[1])
+            raw = raw.replace('!time!', array[2])
+            html += raw
+    else:
+        html = 'No posts!'
+    with open('main.html', 'r') as page:
+        main = page.read()
+    return main.replace('!articles!', html)
 
 @app.route('/editor')
 def edit_page():
     with open('editor.html', 'r') as page:
         return page.read()
 
-@app.route('/submit', methods = ['POST'])
+@app.route('/submit', methods=['POST'])
 def submit_post():
     password = request.form['pass']
     if password == 'securityismypassion':
         content = request.form['content']
         title = request.form['title']
-        time = str[datetime.utcnow()]
+        time = str(datetime.utcnow())
         post = json.dumps([content, title, time])
         ent = dataclient.key('data', 'posts')
         posts = dataclient.get(key=ent)
