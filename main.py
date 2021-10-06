@@ -16,6 +16,7 @@
 # [START gae_python3_app]
 from flask import Flask, request, redirect
 from datetime import datetime
+from flask.helpers import send_from_directory
 from google.cloud import datastore
 import os, json
 
@@ -25,6 +26,10 @@ import os, json
 app = Flask(__name__)
 
 dataclient = datastore.Client()
+
+@app.route('/favicon.ico')
+def favicon_get():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/')
