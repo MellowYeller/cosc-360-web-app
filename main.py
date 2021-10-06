@@ -44,14 +44,15 @@ def main_page():
             html += raw
     else:
         html = 'No posts!'
-    with open('main.html', 'r') as page:
-        main = page.read()
-    return main.replace('!articles!', html)
+    return applyTemplate('Mitchell\'s MicroBlog', html)
 
 @app.route('/editor')
 def edit_page():
     with open('editor.html', 'r') as page:
-        return page.read()
+        editor_html = page.read()
+    editor_title = 'Create a Post'
+    editor_css = ['https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css']
+    return applyTemplate(editor_title, editor_html, editor_css)
 
 @app.route('/submit', methods=['POST'])
 def submit_post():
@@ -71,29 +72,27 @@ def submit_post():
         dataclient.put(posts)
     return redirect('/')
 
-@app.route('/version')
-def versA():
-    return 'This is app version B!'
-
 @app.route('/instance')
 def getid():
     instanceid = os.getenv('GAE_INSTANCE')
-    return str(instanceid)
+    return applyTemplate('Instance ID', str(instanceid))
 
 @app.route('/version-id')
 def getversionid():
     versionid = os.getenv('GAE_VERSION')
-    return str(versionid)
+    return applyTemplate('Version ID', str(versionid))
 
 @app.route('/visitors')
 def getVisitors():
     addVisitor()
     ent = dataclient.key('data', 'visitors')
     total = dataclient.get(key=ent)
+    result = ''
     if total:
-        return 'Total visitors: ' + str(total['total'])
+        result = 'Total visitors: ' + str(total['total'])
     else:
-        return 'Total broke!'
+        result = 'Total broke!'
+    return applyTemplate('Visitors', result)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
@@ -113,3 +112,23 @@ def addVisitor():
         total = datastore.Entity(key=ent)
         total['total'] = 0
         dataclient.put(total)
+
+def applyTemplate(title: str, content: str, css = [], scripts = []):
+    with open('template.html', 'r') as template_file:
+        template = template_file.read()
+
+    stylesheet_html = ''
+    stylesheet_template = '<link rel="stylesheet" href="$url" />'
+    for stylesheet in css:
+        stylesheet_html += stylesheet_template.replace('$url', stylesheet)
+    
+    script_html = ''
+    script_template = '<script src="$url"></script>'
+    for script in scripts:
+        script_html += script_template.replace('$url', script)
+
+    template = template.replace('!pageTitle!', title)
+    template = template.replace('!stylesheets!', stylesheet_html)
+    template = template.replace('!main!', content)
+    template = template.replace('!scripts!', script_html)
+    return template
