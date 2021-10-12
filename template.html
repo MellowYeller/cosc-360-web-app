@@ -6,13 +6,15 @@
         <meta name="description" content="Mitchell's MicroBlog">
         <!-- Bootstrap imports -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/main.css">
         !stylesheets!
         <!-- Page Title -->
         <title>!pageTitle!</title>
     </head>
-    <body style="background-color: transparent;">
+    <body>
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">Mitchell's MicroBlog</a>
+          <div class="container">
+            <a class="navbar-brand" href="/"><i href="favicon.ico"></i>Mitchell's MicroBlog</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,8 +36,14 @@
                     <a class="dropdown-item" href="/visitors">Visitors</a>
                   </div>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/lab3">
+                    Lab3
+                  </a>
+                </li>
               </ul>
             </div>
+          </div>
         </nav>
         <div class="container">
             <div class="row">
