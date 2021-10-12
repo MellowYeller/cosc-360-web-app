@@ -1,0 +1,43 @@
+<h1>Lab 3 Summary</h1>
+<p>
+	Here I will provide a list of changes I've made to the site to satisfy the two extra features required for COSC 360 lab 3.
+</p>
+<h3>Title Bar</h3>
+<p>
+	Leveraging Bootstrap, the site now has a nice navigation bar. The bar links to all pages on the site as of October 10, 2021.
+</p>
+<h3>Template Engine</h3>
+<p>
+	I expanded upon the custom template engine we bagan using for the main page. Every page of the site now uses templating in some way, including the pages from lab 1!
+	All pages will now have the same base style, requiring only writing the inner html for each new page.
+</p>
+<code>
+def apply_template(title: str, content: str, css = [], scripts = []):
+    with open('templates/template.html', 'r') as template_file:
+        template = template_file.read()
+
+    stylesheet_html = ''
+    stylesheet_template = '&lt;link rel="stylesheet" href="$url" /&gt;'
+    for stylesheet in css:
+        stylesheet_html += stylesheet_template.replace('$url', stylesheet)
+    
+    script_html = ''
+    script_template = '&lt;script src="$url"&gt;&lt;/script&gt;'
+    for script in scripts:
+        script_html += script_template.replace('$url', script)
+
+    template = template.replace('!pageTitle!', title)
+    template = template.replace('!stylesheets!', stylesheet_html)
+    template = template.replace('!main!', content)
+    template = template.replace('!scripts!', script_html)
+    return template
+</code>
+<p>
+	The python code that enables this takes in 4 parameters:
+	<ol>
+		<li>A title for the page</li>
+		<li>The HTML content for the page</li>
+		<li>A list of links to CSS sources for the page (can be internal or external)</li>
+		<li>A list of links to JavaScript sources for the page (can be internal or external)</li>
+	</ol>
+</p>

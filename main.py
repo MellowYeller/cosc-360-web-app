@@ -49,7 +49,7 @@ def main_page():
             html += raw
     else:
         html = 'No posts!'
-    return applyTemplate('Mitchell\'s MicroBlog', html)
+    return apply_template('Mitchell\'s MicroBlog', html)
 
 @app.route('/editor')
 def edit_page():
@@ -57,7 +57,7 @@ def edit_page():
         editor_html = page.read()
     editor_title = 'Create a Post'
     editor_css = ['https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css']
-    return applyTemplate(editor_title, editor_html, editor_css)
+    return apply_template(editor_title, editor_html, editor_css)
 
 @app.route('/submit', methods=['POST'])
 def submit_post():
@@ -77,15 +77,22 @@ def submit_post():
         dataclient.put(posts)
     return redirect('/')
 
+@app.route('/lab3')
+def lab3_page():
+    with open('templates/lab3.html', 'r') as  page:
+        lab3_html = page.read()
+    lab3_title = 'Lab 3 Summary'
+    return apply_template(lab3_title, lab3_html)
+    
 @app.route('/instance')
 def getid():
     instanceid = os.getenv('GAE_INSTANCE')
-    return applyTemplate('Instance ID', str(instanceid))
+    return apply_template('Instance ID', str(instanceid))
 
 @app.route('/version-id')
 def getversionid():
     versionid = os.getenv('GAE_VERSION')
-    return applyTemplate('Version ID', str(versionid))
+    return apply_template('Version ID', str(versionid))
 
 @app.route('/visitors')
 def getVisitors():
@@ -97,7 +104,7 @@ def getVisitors():
         result = 'Total visitors: ' + str(total['total'])
     else:
         result = 'Total broke!'
-    return applyTemplate('Visitors', result)
+    return apply_template('Visitors', result)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
@@ -118,7 +125,7 @@ def addVisitor():
         total['total'] = 0
         dataclient.put(total)
 
-def applyTemplate(title: str, content: str, css = [], scripts = []):
+def apply_template(title: str, content: str, css = [], scripts = []):
     with open('templates/template.html', 'r') as template_file:
         template = template_file.read()
 
