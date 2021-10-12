@@ -1,6 +1,6 @@
 <h1>Lab 3 Summary</h1>
 <p>
-	Here I will provide a list of changes I've made to the site to satisfy the two extra features required for COSC 360 lab 3.
+	Here I will provide a list of changes I've made to the site to satisfy the two elements of customization required for COSC 360 lab 3.
 </p>
 <h3>Title Bar</h3>
 <p>
@@ -9,9 +9,9 @@
 <h3>Template Engine</h3>
 <p>
 	I expanded upon the custom template engine we bagan using for the main page. Every page of the site now uses templating in some way, including the pages from lab 1!
-	All pages will now have the same base style, requiring only writing the inner html for each new page.
+	All pages will now have the same base style, requiring only writing the inner html for each new page. This allows a consistent style across the site. I didn't want to copy and paste the navbar on each of the current and future pages, so I did this instead!
 </p>
-<code>
+<pre><code>
 def apply_template(title: str, content: str, css = [], scripts = []):
     with open('templates/template.html', 'r') as template_file:
         template = template_file.read()
@@ -31,7 +31,7 @@ def apply_template(title: str, content: str, css = [], scripts = []):
     template = template.replace('!main!', content)
     template = template.replace('!scripts!', script_html)
     return template
-</code>
+</code></pre>
 <p>
 	The python code that enables this takes in 4 parameters:
 	<ol>
@@ -40,4 +40,8 @@ def apply_template(title: str, content: str, css = [], scripts = []):
 		<li>A list of links to CSS sources for the page (can be internal or external)</li>
 		<li>A list of links to JavaScript sources for the page (can be internal or external)</li>
 	</ol>
+</p>
+<h3>This Page!</h3>
+<p>
+	This page was added for lab 3 as well. It could have been a blog post on the front page, but I didn't want it to get buried or be hard to find.
 </p>
