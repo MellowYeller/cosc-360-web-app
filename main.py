@@ -37,7 +37,7 @@ def main_page():
     ent = dataclient.key('data', 'posts')
     posts = dataclient.get(key=ent)
     article = ""
-    with open('article.html', 'r') as page:
+    with open('templates/article.html', 'r') as page:
         article = page.read()
     html = ""
     if posts:
@@ -53,7 +53,7 @@ def main_page():
 
 @app.route('/editor')
 def edit_page():
-    with open('editor.html', 'r') as page:
+    with open('templates/editor.html', 'r') as page:
         editor_html = page.read()
     editor_title = 'Create a Post'
     editor_css = ['https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css']
@@ -119,7 +119,7 @@ def addVisitor():
         dataclient.put(total)
 
 def applyTemplate(title: str, content: str, css = [], scripts = []):
-    with open('template.html', 'r') as template_file:
+    with open('templates/template.html', 'r') as template_file:
         template = template_file.read()
 
     stylesheet_html = ''
